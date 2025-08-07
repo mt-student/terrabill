@@ -1,0 +1,78 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Linker Bereich: Job-Infos -->
+    <LinearLayout
+        android:id="@+id/layoutJobInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/layoutActions"
+        android:layout_marginEnd="8dp">
+
+        <TextView
+            android:id="@+id/textCustomerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anna Müller | Musterfirma GmbH"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textJobTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="05.08.2025 19:16 - 21:16 Uhr"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textJobAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hauptstraße 9, 12345 Musterstadt"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textJobDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Büro reinigen"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Rechter Bereich: Icon-Buttons -->
+    <LinearLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/buttonCall"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_call"
+            android:contentDescription="@string/call" />
+
+        <ImageButton
+            android:id="@+id/buttonNavigate"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_navigation"
+            android:contentDescription="@string/navigation" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

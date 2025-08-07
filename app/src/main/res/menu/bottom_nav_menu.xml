@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_requests"
+        android:icon="@drawable/outline_notification_add_24"
+        android:title="@string/title_requests" />
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_dashboard" />
+
+    <item
+        android:id="@+id/navigation_customers"
+        android:icon="@drawable/outline_accessibility_24"
+        android:title="@string/title_customers" />
+
+    <item
+        android:id="@+id/navigation_invoices"
+        android:icon="@drawable/outline_payments_24"
+        android:title="@string/title_invoices" />
+</menu>

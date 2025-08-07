@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TerraBill</string>
+    <string name="title_requests">Anfragen</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_customers">Kunden</string>
+    <string name="title_invoices">Rechnungen</string>
+    <string name="navigation">Navigation</string>
+    <string name="call">Anruf</string>
+    <string name="menu">Menü</string>
+    <string name="delete">Löschen</string>
+    <string name="invoices_title">Rechnungen</string>
+</resources>

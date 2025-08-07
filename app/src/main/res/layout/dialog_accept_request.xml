@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvCustomerInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="Kunde wird geladen..."
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/inputHourlyRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Stundenlohn (€)"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/tvHourlyRateSuggestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Vorschlag wird geladen..."
+        android:textColor="#666666"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnUseExisting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Übernehmen" />
+
+        <Button
+            android:id="@+id/btnCreateNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Neu anlegen" />
+    </LinearLayout>
+</LinearLayout>
