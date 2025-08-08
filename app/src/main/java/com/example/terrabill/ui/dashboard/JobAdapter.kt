@@ -44,7 +44,6 @@ class JobAdapter(
             val dateTime = LocalDateTime.parse(job.job.startAt)
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
             val endTime = dateTime.plusHours(job.requestedHours.toLong())
-
             binding.textCustomerName.text = listOfNotNull(
                 "${job.customerFirstname} ${job.customerLastname}".takeIf { it.isNotBlank() },
                 job.customerOrganization
@@ -66,7 +65,6 @@ class JobAdapter(
                 }
                 it.context.startActivity(phoneIntent)
             }
-
             binding.buttonNavigate.setOnClickListener {
                 val address =
                     "${job.customerStreet} ${job.customerHouseNumber}, ${job.customerPostcode} ${job.customerCity}"

@@ -1,6 +1,7 @@
 package com.example.terrabill.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.terrabill.R
 import com.example.terrabill.databinding.FragmentDashboardBinding
 import com.google.android.material.tabs.TabLayout
+import android.widget.CalendarView
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class DashboardFragment : Fragment() {
 
@@ -20,6 +27,8 @@ class DashboardFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private var currentTabText: String = "Alle"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,38 +55,72 @@ class DashboardFragment : Fragment() {
         binding.recyclerViewJobs.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewJobs.adapter = adapter
 
+        val calendarView: CalendarView = binding.calendarView
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val selected = LocalDate.of(year, month + 1, dayOfMonth)
+            val filtered = viewModel.allJobs().filter { j ->
+                runCatching { LocalDateTime.parse(j.job.startAt) }
+                    .getOrNull()
+                    ?.toLocalDate() == selected
+            }
+            adapter.submitList(filtered)
+        }
+
         val tabLayout = binding.tabLayout
         tabLayout.addTab(tabLayout.newTab().setText("Tag"))
         tabLayout.addTab(tabLayout.newTab().setText("Woche"))
         tabLayout.addTab(tabLayout.newTab().setText("Monat"))
         tabLayout.addTab(tabLayout.newTab().setText("Alle"))
+        tabLayout.addTab(tabLayout.newTab().setText("Kalender"))
 
         tabLayout.getTabAt(3)?.select()
         adapter.submitList(viewModel.allJobs())
 
+        fun renderForTab(tabText: String, viewModel: DashboardViewModel, adapter: JobAdapter) {
+            currentTabText = tabText
+            when (tabText) {
+                "Tag" -> {
+                    binding.calendarView.visibility = View.GONE
+                    adapter.submitList(viewModel.filterJobsByDay())
+                }
+                "Woche" -> {
+                    binding.calendarView.visibility = View.GONE
+                    adapter.submitList(viewModel.filterJobsByWeek())
+                }
+                "Monat" -> {
+                    binding.calendarView.visibility = View.GONE
+                    adapter.submitList(viewModel.filterJobsByMonth())
+                }
+                "Kalender" -> {
+                    binding.calendarView.visibility = View.VISIBLE
+                    val selected = Instant.ofEpochMilli(binding.calendarView.date)
+                        .atZone(ZoneId.systemDefault()).toLocalDate()
+                    adapter.submitList(viewModel.jobsOn(selected))
+                }
+                else -> { // Alle
+                    binding.calendarView.visibility = View.GONE
+                    adapter.submitList(viewModel.allJobs())
+                }
+            }
+            Log.d("Dashboard", "renderForTab -> $tabText, Calendar visibility=${binding.calendarView.visibility}")
+        }
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val filteredJobs = when (tab?.position) {
-                    0 -> viewModel.filterJobsByDay()
-                    1 -> viewModel.filterJobsByWeek()
-                    2 -> viewModel.filterJobsByMonth()
-                    else -> viewModel.allJobs()
-                }
-                adapter.submitList(filteredJobs)
+                val text = tab?.text?.toString() ?: "Alle"
+                renderForTab(text, viewModel, adapter)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                val text = tab?.text?.toString() ?: currentTabText
+                renderForTab(text, viewModel, adapter)
+            }
         })
 
-        viewModel.jobs.observe(viewLifecycleOwner) { jobList ->
-            val filteredJobs = when (tabLayout.selectedTabPosition) {
-                0 -> viewModel.filterJobsByDay()
-                1 -> viewModel.filterJobsByWeek()
-                2 -> viewModel.filterJobsByMonth()
-                else -> jobList
-            }
-            adapter.submitList(filteredJobs)
+        viewModel.jobs.observe(viewLifecycleOwner) {
+            val activeTabText = tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text?.toString() ?: currentTabText
+            renderForTab(activeTabText, viewModel, adapter)
+
         }
         return root
     }
