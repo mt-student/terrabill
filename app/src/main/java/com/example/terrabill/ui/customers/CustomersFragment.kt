@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +42,12 @@ class CustomersFragment : Fragment() {
                 }
             }
         )
+        binding.etSearch.addTextChangedListener { text ->
+            adapter.filter(text?.toString().orEmpty())
+        }
+        customersViewModel.customers.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(list)
+        }
         binding.recyclerViewCustomers.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewCustomers.adapter = adapter
 

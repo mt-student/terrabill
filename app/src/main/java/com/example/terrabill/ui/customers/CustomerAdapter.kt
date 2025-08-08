@@ -19,6 +19,26 @@ class CustomerAdapter(
     private val onDeleteCustomer: (Customer) -> Unit
 ) : ListAdapter<Customer, CustomerAdapter.CustomerViewHolder>(CustomerDiffCallback()) {
 
+    private var originalList: List<Customer> = emptyList()
+
+    override fun submitList(list: List<Customer>?) {
+        if (list != null && originalList.isEmpty()) {
+            originalList = list
+        }
+        super.submitList(list)
+    }
+
+    fun filter(query: String) {
+        val base = originalList
+        val q = query.trim().lowercase()
+        val filtered = if (q.isEmpty()) base else base.filter { c ->
+            val name = "${c.firstname} ${c.lastname}".trim().lowercase()
+            val org = c.organization?.lowercase().orEmpty()
+            name.contains(q) || org.contains(q)
+        }
+        super.submitList(filtered)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerViewHolder {
         val binding =
             ItemCustomerBinding.inflate(LayoutInflater.from(parent.context), parent, false)

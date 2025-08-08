@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,8 @@ import com.example.terrabill.databinding.ItemJobBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import androidx.core.net.toUri
+import com.example.terrabill.R
+import com.example.terrabill.data.model.JobStatus
 
 class JobAdapter(
     private val onJobClick: (JobDetails) -> Unit
@@ -72,7 +75,12 @@ class JobAdapter(
                 mapIntent.setPackage("com.google.android.apps.maps")
                 it.context.startActivity(mapIntent)
             }
-
+            val bgColor = when (job.job.status) {
+                JobStatus.ABGESCHLOSSEN -> ContextCompat.getColor(itemView.context, R.color.red_50)
+                JobStatus.GESTARTET -> ContextCompat.getColor(itemView.context, R.color.yellow_50)
+                JobStatus.OFFEN -> ContextCompat.getColor(itemView.context, R.color.green_50)
+            }
+            itemView.setBackgroundColor(bgColor)
             binding.root.setOnClickListener {
                 onJobClick(job)
             }

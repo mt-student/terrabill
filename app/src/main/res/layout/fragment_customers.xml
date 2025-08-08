@@ -3,6 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <EditText
+    android:id="@+id/etSearch"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Suche nach Name oder Organisation"
+    android:imeOptions="actionDone"
+    android:inputType="text"
+    android:padding="12dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCustomers"
